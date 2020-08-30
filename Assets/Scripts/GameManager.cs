@@ -41,7 +41,9 @@ public class GameManager : MonoBehaviour
     }
 
     void DealClicked() {
+        deck.Shuffle();
         player.SetHandForThisPlayer();
+        dealer.SetHandForThisPlayer();
     }
     void HitClicked()
     {

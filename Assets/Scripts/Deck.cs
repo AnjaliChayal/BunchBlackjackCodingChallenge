@@ -54,7 +54,7 @@ public class Deck : MonoBehaviour
 
     }
 
-    void Shuffle()
+  public  void Shuffle()
     {
         for (int i = sprites.Count - 1; i > 0 ; --i)
         {

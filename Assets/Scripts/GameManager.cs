@@ -15,9 +15,24 @@ public class GameManager : MonoBehaviour
     public Button hitButton;
     public Button betButton;
 
-   public Player player;
+    public Text standButtonText;
+    public Text dealerScoreText;
+    public Text betsText;
+    public Text cashText;
+    public Text playerScoreText;
+
+    public GameObject dealerHideCard;
+
+    // value of the bet
+    int pot = 0;
+
+    public Player player;
    public Player dealer;
 
+    int standClicks = 0;
+
+
+    
     public static GameManager instance;
 
 
@@ -41,17 +56,49 @@ public class GameManager : MonoBehaviour
     }
 
     void DealClicked() {
+        dealerScoreText.gameObject.SetActive(false);
         deck.Shuffle();
         player.SetHandForThisPlayer();
         dealer.SetHandForThisPlayer();
+        playerScoreText.text = "Hand : " + player.handValue.ToString();
+        dealerScoreText.text = "Dealer Hand : " + dealer.handValue.ToString();
+        dealButton.gameObject.SetActive(false);
+        hitButton.gameObject.SetActive(true);
+        standButton.gameObject.SetActive(true);
+        standButtonText.text = "Stand";
+
+        // Set Size of bet
+        pot = 40;
+        betsText.text = "Bet : $" + pot.ToString();
+        cashText.text = "Cash : $" + player.Money.ToString();
     }
+
     void HitClicked()
     {
-
+        if (player.GetCardForPlayer() <= 10) {
+            player.GetCardForPlayer();
+        }
     }
+
+
     void StandClicked()
     {
+        standClicks++;
+        if (standClicks > 1)
 
+            Debug.Log("End");
+
+        HitDealer();
+        standButtonText.text = "Call";
+
+    }
+
+    void HitDealer() {
+        while (dealer.handValue< 16 && dealer.nextCardIndex < 10) {
+            dealer.GetCardForPlayer();
+            
+            // update dealer score after this
+        }
 
     }
 }

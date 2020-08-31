@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     // total value of cards in player hand
     public int handValue = 0;
     // money for betting 
-    public int money = 1000;
+    int money = 1000;
 
     public List<GameObject> hand = new List<GameObject>();
     public int nextCardIndex = 0;
@@ -18,7 +18,17 @@ public class Player : MonoBehaviour
     List<Card> aceList = new List<Card>();
 
     // Start is called before the first frame update
+    public int Money {
+        get {
 
+            return money;
+
+        }
+
+        set {
+            money += value;
+        }
+    }
     private void Start()
     {
         
@@ -38,6 +48,7 @@ public class Player : MonoBehaviour
 
     public int GetCardForPlayer() {
         // get a card and deal it to the player
+      //  if (nextCardIndex <= 8)
         int cardValue = GameManager.instance.deck.DealCard(hand[nextCardIndex].GetComponent<Card>());
         hand[nextCardIndex].GetComponent<Image>().enabled = true;
         handValue += cardValue;
@@ -45,9 +56,29 @@ public class Player : MonoBehaviour
             aceList.Add(hand[nextCardIndex].GetComponent<Card>());
 
         }
-        //CheckForAce();
+        CheckForAce();
         nextCardIndex++;
         return handValue;
+
+    }
+
+    // to check whether to assign 1 or 11 to an ace
+    public void CheckForAce() {
+
+        foreach (Card card in aceList)
+        {
+            if (handValue + 10 < 22 && card.ValueOfThisCard == 1)
+            {
+                card.ValueOfThisCard = 11;
+                handValue += 10;
+
+
+            }
+            else if (handValue > 21 && card.ValueOfThisCard == 11) {
+                card.ValueOfThisCard = 1;
+                handValue -= 10;
+            }
+        }
 
     }
 }

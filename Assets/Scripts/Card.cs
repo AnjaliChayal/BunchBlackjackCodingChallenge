@@ -19,10 +19,10 @@ public class Card : MonoBehaviour
     }
 
 
-    private void ResetCard()
+    public void ResetCard()
     {
         Sprite backSprite = Deck.instance.backSprite;
-        gameObject.GetComponent<SpriteRenderer>().sprite = backSprite;
+        gameObject.GetComponent<Image>().sprite = backSprite;
         ValueOfThisCard = 0;
     }
 

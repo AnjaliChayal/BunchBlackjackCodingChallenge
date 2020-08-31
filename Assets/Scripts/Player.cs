@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     // total value of cards in player hand
     public int handValue = 0;
     // money for betting 
+    [SerializeField]
     int money = 1000;
 
     public List<GameObject> hand = new List<GameObject>();
@@ -26,7 +27,8 @@ public class Player : MonoBehaviour
         }
 
         set {
-            money += value;
+            money = value;
+            PlayerPrefs.SetString("Cash", money.ToString());
         }
     }
     private void Start()
@@ -47,10 +49,13 @@ public class Player : MonoBehaviour
     }
 
     public int GetCardForPlayer() {
-        // get a card and deal it to the player
-      //  if (nextCardIndex <= 8)
         int cardValue = GameManager.instance.deck.DealCard(hand[nextCardIndex].GetComponent<Card>());
-        hand[nextCardIndex].GetComponent<Image>().enabled = true;
+
+        // get a card and deal it to the player
+      //  if (hand[10].GetComponent<Image>().enabled != true) {
+            hand[nextCardIndex].GetComponent<Image>().enabled = true;
+
+        //}
         handValue += cardValue;
         if (cardValue == 1) {
             aceList.Add(hand[nextCardIndex].GetComponent<Card>());
@@ -79,6 +84,19 @@ public class Player : MonoBehaviour
                 handValue -= 10;
             }
         }
+
+    }
+
+  public  void ResetHand() {
+        for (int i = 0; i < hand.Count; i++)
+        {
+            hand[i].GetComponent<Card>().ResetCard();
+            hand[i].GetComponent<Image>().enabled = false;
+
+        }
+        nextCardIndex = 0;
+        handValue = 0;
+        aceList.Clear();
 
     }
 }
